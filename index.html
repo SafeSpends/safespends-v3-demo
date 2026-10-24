@@ -1953,10 +1953,10 @@ var _rset=renderSettings; renderSettings=function(){ _rset();
 
 /* ---------- tiles + navigation wiring ---------- */
 Object.assign(BUILT3,{'Net worth':'networth','Forecast':'forecast','Safety net':'safety','Paycheck split':'split','Payment calendar':'paycal','Year planner':'year','Month review':'review','CSV import':'import'});
-var _rt=renderTilesV3; renderTilesV3=function(){ _rt();
+var _rt=renderTilesV4; renderTilesV3=function(){ _rt();
   var extras=[['🏦','Net worth','Assets minus debts, at a glance'],['📈','Forecast','30, 60 and 90 days ahead'],['🛟','Safety net','Months of cover, planned'],['💵','Paycheck split','Give each paycheck a job'],['🗓️','Payment calendar','Due days, marked paid'],['📅','Year planner','Next 12 months + pots'],['📊','Month review','Health score & recap'],['📥','CSV import','Bank file in, duplicates flagged']];
-  extras.forEach(t=>{ var b=document.createElement('button'); b.className='tile'; b.dataset.tile=t[1];
-    b.innerHTML='<span class="gi">'+t[0]+'</span><div class="t">'+t[1]+'</div><div class="d">'+t[2]+' · <b>open</b></div>';
+  extras.forEach(t=>{ var b=document.createElement('button'); b.className='trow'; b.dataset.tile=t[1];
+    b.innerHTML='<span class="gi">'+t[0]+'</span><span class="grow"><span class="t">'+t[1]+'</span><span class="d">'+t[2]+'</span></span><span class="chev">›</span>';
     b.onclick=()=>show(BUILT3[t[1]]); $('#tiles').appendChild(b) });
 };
 var _sh=show; show=function(v){ _sh(v);
