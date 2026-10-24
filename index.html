@@ -81,6 +81,8 @@
   .stat{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px 12px 10px}
   .stat .k{font-size:11px; font-weight:800; letter-spacing:.8px; color:var(--mut); text-transform:uppercase}
   .stat .v{font-size:19px; font-weight:800; margin-top:2px}
+  /* V3 fix: stretched stat boxes keep their content centred, not stuck at the top */
+  #view-today .stat{display:flex; flex-direction:column; justify-content:center}
   .stat .v.lime{color:var(--limeD)} [data-theme="dark"] .stat .v.lime{color:var(--lime)}
   .stat .v.vio{color:var(--vio)}
   /* list rows */
@@ -198,7 +200,7 @@
   .side .addbtn{margin:14px 8px 2px; width:calc(100% - 16px)}
   /* ============ desktop Today dashboard grid ============ */
   @media (min-width:960px){
-    #view-today.on{display:grid; grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:18px; grid-auto-flow:dense; align-items:start}
+    #view-today.on{display:grid; grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:18px; grid-auto-flow:dense; align-items:stretch}
     #view-today>*{margin-bottom:0 !important}
     #view-today .g-main{grid-column:1}
     #view-today .g-side{grid-column:2}
@@ -1516,7 +1518,7 @@ vt6.querySelector('.stats').classList.add('g-main');
 $('#oneThingCard').classList.add('g-main');
 const qaCard6=$('#qaRow').closest('.card'); qaCard6.classList.add('g-main');
 const weekCard6=$('#weekBody').closest('.card'); weekCard6.classList.add('g-wide');
-const spentCard6=$('#todaySpends').closest('.card'); spentCard6.classList.add('g-main');
+const spentCard6=$('#todaySpends').closest('.card'); spentCard6.classList.add('g-wide');
 function mkCard(cls,html){const el=document.createElement('div'); el.className='card '+cls; el.innerHTML=html; return el}
 const cuEl=mkCard('g-side','<div class="row"><h3 class="grow" style="margin:0">Coming up</h3><button class="btn soft mini" id="cuAll">All bills</button></div><div id="cuList"></div><div id="cuFoot"></div>');
 vt6.querySelector('.stats').after(cuEl);
