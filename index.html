@@ -373,7 +373,7 @@
   <section class="view" id="view-forecast">
     <div class="row" style="margin-bottom:12px"><h3 class="grow" style="margin:0;font-size:19px">Forecast — what is coming</h3><button class="btn ghost" onclick="show('today')">← Today</button></div>
     <div class="card"><div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn soft" data-fch="30">30 days</button><button class="btn soft" data-fch="60">60 days</button><button class="btn soft" data-fch="90">90 days</button></div>
-    <div id="fc90Bars" style="margin-top:14px"></div><div id="fc90Lines" style="margin-top:10px"></div></div>
+    <div id="fc90Bars" class="fcbars" style="margin-top:14px; gap:2px"></div><div id="fc90Lines" style="margin-top:10px"></div></div>
     <div class="card"><h3>What if I buy something?</h3><p class="sub">Test a purchase before you make it — see the lowest day it would cause.</p>
     <label class="lbl">Amount</label><input id="wiAmt" type="number" min="0" step="0.01" placeholder="0.00">
     <label class="lbl">On this date</label><input id="wiDate" type="date"><button class="btn lime block" id="wiGo" style="margin-top:12px">Test it</button><div id="wiOut" style="margin-top:10px"></div></div>
@@ -1761,9 +1761,9 @@ function forecastSeries(days,extra){ var c=calc(), t=TODAY(), end=addD(t,days);
 /* ---------- Forecast 30/60/90 + what-if ---------- */
 var fcDays=30;
 function renderForecast90(){
-  var r=forecastSeries(fcDays), s=r.series, maxV=Math.max(r.start,1), minS=s.reduce((m,x)=>x.bal<m.bal?x:m,s[0]);
+  var r=forecastSeries(fcDays), s=r.series, maxV=Math.max(r.start,1,...s.map(x=>x.bal)), minS=s.reduce((m,x)=>x.bal<m.bal?x:m,s[0]);
   $$('#view-forecast [data-fch]').forEach(b=>b.classList.toggle('lime',+b.dataset.fch===fcDays));
-  $('#fc90Bars').innerHTML=s.map(x=>'<div class="fccol"><div class="fctrack"><div class="fcbar'+(x.bal===minS.bal?' min':'')+(x.bal<0?' neg':'')+'" title="'+fmtD(x.d)+' · '+fmt(x.bal)+'" style="height:'+Math.max(3,Math.round(Math.max(0,x.bal)/maxV*100))+'%"></div></div><div class="fclab'+(x.bal===minS.bal?' min':'')+'">'+pdate(x.d).getDate()+'</div></div>').join('');
+  $('#fc90Bars').innerHTML=s.map((x,i)=>'<div class="fccol"><div class="fctrack"><div class="fcbar'+(x.bal===minS.bal?' min':'')+(x.bal<0?' neg':'')+'" title="'+fmtD(x.d)+' · '+fmt(x.bal)+'" style="height:'+Math.max(3,Math.round(Math.max(0,x.bal)/maxV*100))+'%"></div></div><div class="fclab'+(x.bal===minS.bal?' min':'')+'">'+(i%7===0?pdate(x.d).getDate():'')+'</div></div>').join('');
   $('#fc90Lines').innerHTML='<div class="li"><span class="ic">📉</span><span class="grow"><span class="t">Lowest day: '+fmtD(minS.d)+'</span><br><span class="d">Balance would reach '+fmt(minS.bal)+'.</span></span></div>'+(minS.bal<0?'<p class="small" style="color:var(--bad)">On '+fmtD(minS.d)+' the bills pass your balance by '+fmt(-minS.bal)+'. A small buffer, or moving one bill, fixes it.</p>':'')+'<p class="small mut">Starting point '+fmt(r.start)+' · '+fcDays+' days · estimates from the numbers you entered.</p>';
   var ev=[], inc={}; incomeEvents(TODAY(),addD(TODAY(),fcDays)).forEach(e=>{inc[e.date]=(inc[e.date]||0)+e.amt});
   S.bills.forEach(b=>{ occs(b,TODAY(),addD(TODAY(),fcDays)).forEach(d=>{ if(!isPaid(b.id,d)) ev.push({date:d,amt:-(+b.amount||0),label:b.name}) }) });
