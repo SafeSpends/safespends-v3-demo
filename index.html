@@ -82,7 +82,8 @@
   .stat .k{font-size:11px; font-weight:800; letter-spacing:.8px; color:var(--mut); text-transform:uppercase}
   .stat .v{font-size:19px; font-weight:800; margin-top:2px}
   /* V3 fix: stretched stat boxes keep their content centred, not stuck at the top */
-  #view-today .stat{display:flex; flex-direction:column; justify-content:center}
+  #view-today .stat{display:flex; flex-direction:column; justify-content:space-between}
+  #view-today .stat .s{border-top:1px solid var(--line); padding-top:8px; margin-top:10px; font-size:12px; color:var(--mut); font-weight:600}
   .stat .v.lime{color:var(--limeD)} [data-theme="dark"] .stat .v.lime{color:var(--lime)}
   .stat .v.vio{color:var(--vio)}
   /* list rows */
@@ -312,9 +313,9 @@
     </div>
 
     <div class="stats">
-      <div class="stat"><div class="k">Days to payday</div><div class="v" id="stDays">–</div></div>
-      <div class="stat"><div class="k">Left to last</div><div class="v lime" id="stPool">–</div></div>
-      <div class="stat"><div class="k">Each day</div><div class="v vio" id="stPace">–</div></div>
+      <div class="stat"><div class="k">Days to payday</div><div class="v" id="stDays">–</div><div class="s" id="stDaysSub">–</div></div>
+      <div class="stat"><div class="k">Left to last</div><div class="v lime" id="stPool">–</div><div class="s" id="stPoolSub">–</div></div>
+      <div class="stat"><div class="k">Each day</div><div class="v vio" id="stPace">–</div><div class="s" id="stPaceSub">–</div></div>
     </div>
 
     <div class="card" id="oneThingCard">
@@ -1026,6 +1027,7 @@ function renderToday(){const c=calc();
   $('#bdBox').innerHTML=L.join('');
   /* stats */
   $('#stDays').textContent=c.days; $('#stPool').textContent=fmt(c.pool); $('#stPace').textContent=fmt(c.pace);
+  $('#stDaysSub').textContent='Payday '+fmtD(c.pd); $('#stPoolSub').textContent='Until '+fmtD(c.pd); $('#stPaceSub').textContent='Every day for '+c.days+' day'+(c.days>1?'s':'');
   /* one thing */
   $('#oneThing').textContent=c.nb?('Next bill: '+c.nb.bill.name+' — '+fmt(c.nb.bill.amount)+' on '+fmtD(c.nb.due)+'. It is already protected inside your number, so there is nothing to do about it today.'):'No bills are due before payday. Nothing needs doing today.';
   /* week */
